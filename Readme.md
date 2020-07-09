@@ -1,6 +1,6 @@
 # Учебный проект «Код и Магия» [![Build status][travis-image]][travis-url]
 
-* Студент: [Андрей Ложкин](https://up.htmlacademy.ru/javascript/20/user/804003).
+* Студент: `Abert Muravtsev`.
 * Наставник: `Неизвестно`.
 
 ---
