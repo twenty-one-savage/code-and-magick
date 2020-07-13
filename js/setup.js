@@ -1,5 +1,8 @@
 'use strict';
+
 var REQUIRED_NUMBERS_OF_MAGES = 4;
+var ENTER_KEYCODE = 13;
+var ESC_KEYCODE = 27;
 
 var createWizardsArray = function () {
   var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
@@ -46,10 +49,67 @@ var showDOMElement = function (el) {
   el.classList.remove('hidden');
 };
 
-var setup = document.querySelector('.setup');
-showDOMElement(setup);
+var hideDOMElement = function (el) {
+  el.classList.add('hidden');
+};
 
-var setupSimilarElement = setup.querySelector('.setup-similar');
+var setupElement = document.querySelector('.setup');
+
+var setupOpenElement = document.querySelector('.setup-open');
+
+var setupCloseElement = setupElement.querySelector('.setup-close');
+
+var setupOpenElementClickHandler = function () {
+  document.addEventListener('keydown', documentEscPressHandler);
+  showDOMElement(setupElement);
+};
+
+var setupOpenElementEnterPressHandler = function (evt) {
+  document.addEventListener('keydown', documentEscPressHandler);
+  return evt.keyCode === ENTER_KEYCODE ? showDOMElement(setupElement) : false;
+};
+
+var setupCloseElementClickHandler = function () {
+  hideDOMElement(setupElement);
+  document.removeEventListener('keydown', documentEscPressHandler);
+};
+
+var setupCloseElementEnterPressHandler = function (evt) {
+  document.removeEventListener('keydown', documentEscPressHandler);
+  return evt.keyCode === ENTER_KEYCODE ? hideDOMElement(setupElement) : false;
+};
+
+var documentEscPressHandler = function (evt) {
+  var userInput = document.querySelector('.setup-user-name');
+  if (evt.keyCode === ESC_KEYCODE && userInput !== document.activeElement) {
+    hideDOMElement(setupElement);
+  }
+};
+
+setupOpenElement.addEventListener('click', setupOpenElementClickHandler);
+setupOpenElement.addEventListener('keydown', setupOpenElementEnterPressHandler);
+
+setupCloseElement.addEventListener('click', setupCloseElementClickHandler);
+setupCloseElement.addEventListener('keydown', setupCloseElementEnterPressHandler);
+
+var userNameInputElement = setupElement.querySelector('.setup-user-name');
+
+var userNameInputElementInvalidHandler = function () {
+  var el = userNameInputElement;
+  if (el.validity.tooShort) {
+    el.setCustomValidity('The name must consist of at least 2 characters');
+  } else if (el.validity.tooLong) {
+    el.setCustomValidity('Name must not exceed 25 characters');
+  } else if (el.validity.valueMissing) {
+    el.setCustomValidity('Required field');
+  } else {
+    el.setCustomValidity('');
+  }
+};
+
+userNameInputElement.addEventListener('invalid', userNameInputElementInvalidHandler);
+
+var setupSimilarElement = setupElement.querySelector('.setup-similar');
 showDOMElement(setupSimilarElement);
 
 var similarListElement = setupSimilarElement.querySelector('.setup-similar-list');
